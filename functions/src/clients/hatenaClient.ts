@@ -7,7 +7,7 @@ export class HatenaClient {
   async getHotEntries(): Promise<HatenaItem[]> {
     const parser = new Parser<any, HatenaItem>({
       customFields: {
-        item: ["title", "link", "description", "hatena:bookmarkcount", "date", "hatena:bookmarkCommentListPageUrl"],
+        item: ["title", "link", "description", "hatena:bookmarkcount", "date", "hatena:bookmarkCommentListPageUrl", "hatena:imageurl"],
       },
     });
     const result = await parser.parseURL(this.RSS_URL);

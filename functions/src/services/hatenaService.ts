@@ -1,8 +1,9 @@
 import { HatenaClient } from "./../clients/hatenaClient";
 import { FirestoreClient } from "../clients/firestoreClient";
 
-const MIN_BOOKMARK_COUNT = 100;
+const MIN_BOOKMARK_COUNT = 150;
 const HATENA_ANONYMOUS_URL = "https://anond.hatelabo.jp/";
+const TOGETTER_URL = "https://togetter.com/";
 
 const findValidStory = async (entries: HatenaItem[]) => {
   const fireStoreClient = new FirestoreClient();
@@ -19,8 +20,13 @@ const findValidStory = async (entries: HatenaItem[]) => {
       continue;
     }
 
-    // 匿名ユーザーのエントリーを除外
+    // 匿名エントリーを除外
     if (entry.link.includes(HATENA_ANONYMOUS_URL)) {
+      continue;
+    }
+
+    // togetterのエントリーを除外
+    if (entry.link.includes(TOGETTER_URL)) {
       continue;
     }
 

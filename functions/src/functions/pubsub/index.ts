@@ -9,15 +9,22 @@ const runtimeOpts = {
   memory: "1GB" as const,
 };
 
+// const SUMMARY_POST_THRESHOLD = 200;
+
 export const postTrend = functions
   .runWith(runtimeOpts)
-  .pubsub.schedule("every 2 hours")
+  .pubsub.schedule("every 1 hours")
   .onRun(async () => {
     const targetEntry = await getTargetEntry();
     const result = await postEntry(targetEntry);
 
     const firestoreClient = new FirestoreClient();
     await firestoreClient.insertPostedEntry(targetEntry);
+
+    // if (targetEntry["hatena:bookmarkcount"] < SUMMARY_POST_THRESHOLD) {
+    //   return;
+    // }
+
     try {
       const summary = await getSummaryFromUrl(targetEntry.link);
       await replyToPostPerText(summary, {

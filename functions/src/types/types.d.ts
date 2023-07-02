@@ -5,6 +5,7 @@ type HatenaItem = {
   description: string;
   "hatena:bookmarkcount": number;
   "hatena:bookmarkCommentListPageUrl": string;
+  "hatena:imageurl": string;
   date: string;
 }
 

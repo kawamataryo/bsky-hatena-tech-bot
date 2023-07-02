@@ -36,9 +36,10 @@ export const getOgImageFromUrl = async (url: string): Promise<OpenGraph> => {
 export const createPostText = (item: HatenaItem): string => {
   return `
 📝 ${item.title}
-🔖 ${item["hatena:bookmarkcount"].toLocaleString()}
+
+🔖 ${item["hatena:bookmarkcount"].toLocaleString()} ブックマーク
 💬 [コメント](${item["hatena:bookmarkCommentListPageUrl"]})
-🔗 [記事](${item.link})
+🔗 [記事リンク](${item.link})
 `.trim();
 };
 
@@ -77,8 +78,8 @@ export const postEntry = async (item: HatenaItem) => {
             mimeType: uploadedImage.mimeType,
             size: uploadedImage.size,
           },
-          title: og.title,
-          description: og.description,
+          title: item.title,
+          description: item.description,
         },
       },
     });
@@ -96,7 +97,7 @@ export const postSummaryOnThread = async (summary: string, postRef: ComAtprotoRe
     password: functions.config().bsky.password,
   });
   agent.post({
-    text: truncateText(`💡 Summary: \n\n${summary}`, 300),
+    text: truncateText(`💡 Summary by GPT: \n\n${summary}`, 300),
     reply: {
       root: postRef,
       parent: postRef,
@@ -175,7 +176,7 @@ export const replyToPostPerText = async (text: string, rootPostRef: ComAtprotoRe
     password: functions.config().bsky.password,
   });
 
-  const treadTexts = splitStringForThreadText(`💡 Summary: \n\n${text}`, 300);
+  const treadTexts = splitStringForThreadText(`💡 Summary by GPT: \n\n${text}`, 300);
   let targetPostRef = rootPostRef;
 
   for (const text of treadTexts) {
