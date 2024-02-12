@@ -1,9 +1,6 @@
 import { HatenaClient } from "./../clients/hatenaClient";
 import { FirestoreClient } from "../clients/firestoreClient";
-
-const MIN_BOOKMARK_COUNT = 150;
-const HATENA_ANONYMOUS_URL = "https://anond.hatelabo.jp/";
-const TOGETTER_URL = "https://togetter.com/";
+import { HATENA_ANONYMOUS_URL, MIN_BOOKMARK_COUNT, TOGETTER_URL } from "../constants";
 
 const findValidStory = async (entries: HatenaItem[]) => {
   const fireStoreClient = new FirestoreClient();

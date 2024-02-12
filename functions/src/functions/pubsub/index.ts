@@ -3,6 +3,7 @@ import { postEntry, replyToPostPerText } from "../../services/bskyService";
 import { FirestoreClient } from "../../clients/firestoreClient";
 import { getSummaryFromUrl } from "../../services/openAIService";
 import { getTargetEntry } from "../../services/hatenaService";
+import { SITES_WITHOUT_SUMMARY } from "../../constants";
 
 const runtimeOpts = {
   timeoutSeconds: 240,
@@ -21,9 +22,9 @@ export const postTrend = functions
     const firestoreClient = new FirestoreClient();
     await firestoreClient.insertPostedEntry(targetEntry);
 
-    // if (targetEntry["hatena:bookmarkcount"] < SUMMARY_POST_THRESHOLD) {
-    //   return;
-    // }
+    if (SITES_WITHOUT_SUMMARY.some((url) => targetEntry.link.startsWith(url))) {
+      return;
+    }
 
     try {
       const summary = await getSummaryFromUrl(targetEntry.link);

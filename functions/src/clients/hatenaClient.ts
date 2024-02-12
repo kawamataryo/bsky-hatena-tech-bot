@@ -14,9 +14,3 @@ export class HatenaClient {
     return result.items;
   }
 }
-
-(async () => {
-  const client = new HatenaClient();
-  const hotEntries = await client.getHotEntries();
-  console.log(hotEntries);
-})();
