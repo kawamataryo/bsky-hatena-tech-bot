@@ -32,3 +32,13 @@ type OpenGraph = {
   title: string;
   uint8Array: Uint8Array;
 };
+
+type Secrets = {
+  bsky: {
+    identifier: string;
+    password: string;
+  };
+  openai: {
+    api_key: string;
+  };
+};

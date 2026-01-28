@@ -1,4 +1,3 @@
-import * as functions from "firebase-functions";
 import sharp from "sharp";
 import ogs from "open-graph-scraper";
 import { BskyClient } from "../clients/bskyClient";
@@ -43,10 +42,10 @@ export const createPostText = (item: HatenaItem): string => {
 `.trim();
 };
 
-export const postEntry = async (item: HatenaItem) => {
+export const postEntry = async (item: HatenaItem, secrets: Secrets) => {
   const agent = await BskyClient.createAgent({
-    identifier: functions.config().bsky.identifier,
-    password: functions.config().bsky.password,
+    identifier: secrets.bsky.identifier,
+    password: secrets.bsky.password,
   });
   const { text, facets } = convertLinkText(createPostText(item));
 
@@ -91,10 +90,10 @@ export const postEntry = async (item: HatenaItem) => {
   }
 };
 
-export const postSummaryOnThread = async (summary: string, postRef: ComAtprotoRepoStrongRef.Main) => {
+export const postSummaryOnThread = async (summary: string, postRef: ComAtprotoRepoStrongRef.Main, secrets: Secrets) => {
   const agent = await BskyClient.createAgent({
-    identifier: functions.config().bsky.identifier,
-    password: functions.config().bsky.password,
+    identifier: secrets.bsky.identifier,
+    password: secrets.bsky.password,
   });
   agent.post({
     text: truncateText(`💡 Summary by GPT: \n\n${summary}`, 300),
@@ -170,10 +169,10 @@ export const splitStringForThreadText = (text: string, limit: number) => {
   return chunks.map((chunk, index) => `${chunk} (${index + 1}/${total})`);
 };
 
-export const replyToPostPerText = async (text: string, rootPostRef: ComAtprotoRepoStrongRef.Main) => {
+export const replyToPostPerText = async (text: string, rootPostRef: ComAtprotoRepoStrongRef.Main, secrets: Secrets) => {
   const agent = await BskyClient.createAgent({
-    identifier: functions.config().bsky.identifier,
-    password: functions.config().bsky.password,
+    identifier: secrets.bsky.identifier,
+    password: secrets.bsky.password,
   });
 
   const treadTexts = splitStringForThreadText(`💡 Summary by GPT: \n\n${text}`, 300);
